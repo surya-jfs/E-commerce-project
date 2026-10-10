@@ -1,201 +1,224 @@
-# 🛒 E-Commerce Website
+# E-Commerce Website
 
-A modern Full Stack E-Commerce web application built using Java, Spring Boot, and MySQL. The application enables users to browse products, manage their shopping cart, place orders, and allows administrators to manage products, categories, and customer orders.
+A full-stack e-commerce application with a React frontend and a Java Spring Boot backend. The backend uses Spring Data JPA and MySQL, with Spring Security and JWT-related classes for authentication.
 
----
-
-## 🚀 Features
-
-### 👤 User Features
-- User Registration & Login
-- Secure Authentication & Authorization
-- Browse Products
-- Search & Filter Products
-- Product Details Page
-- Shopping Cart Management
-- Place Orders
-- Order History
-- User Profile Management
-
-### 🛠️ Admin Features
-- Admin Dashboard
-- Add, Update, Delete Products
-- Category Management
-- Inventory Management
-- Order Management
-- Customer Management
-
----
-
-## 🏗️ Tech Stack
+## Tech Stack
 
 ### Frontend
-- HTML5
-- CSS3
-- JavaScript
+- React
+- Vite
+- React Router
+- Axios
 - Bootstrap
-- React.js (Optional)
+- React Icons
 
 ### Backend
-- Java 17+
+- Java 17
 - Spring Boot
-- Spring MVC
+- Spring Web MVC
 - Spring Data JPA
 - Spring Security
-- REST API
+- JSON Web Tokens (JJWT)
+- Maven
 
 ### Database
 - MySQL
 
-### Build Tool
-- Maven
+## Project Structure
 
-### Version Control
+The repository contains two applications: `e-commerce/` for the backend and `react-e-commerce/` for the frontend.
+
+```text
+E-commerce-project/
+├── README.md
+├── .vscode/
+├── e-commerce/                         # Spring Boot backend
+│   ├── pom.xml
+│   ├── mvnw
+│   ├── mvnw.cmd
+│   └── src/
+│       ├── main/
+│       │   └── java/com/example/e_commerce/
+│       │       ├── ECommerceApplication.java
+│       │       ├── controller/          # REST controllers
+│       │       │   ├── AdminController.java
+│       │       │   ├── AuthController.java
+│       │       │   ├── ProductController.java
+│       │       │   └── Products.java
+│       │       ├── service/             # Business logic
+│       │       │   └── ProductService.java
+│       │       ├── repository/          # JPA repositories
+│       │       │   ├── ProductRepository.java
+│       │       │   └── UserRepository.java
+│       │       ├── entity/              # JPA entities
+│       │       │   ├── Product.java
+│       │       │   └── User.java
+│       │       ├── dto/                 # Data transfer objects
+│       │       │   ├── AuthRequest.java
+│       │       │   └── ProductResponse.java
+│       │       ├── cart/                # Cart domain
+│       │       │   ├── Cart.java
+│       │       │   ├── CartItem.java
+│       │       │   ├── CartController.java
+│       │       │   ├── CartService.java
+│       │       │   ├── CartRepository.java
+│       │       │   └── dto/
+│       │       │       ├── CartItemDTO.java
+│       │       │       └── CartResponseDTO.java
+│       │       ├── order/               # Order domain
+│       │       │   ├── OrderController.java
+│       │       │   ├── OrderService.java
+│       │       │   ├── OrderRepository.java
+│       │       │   ├── OrderItemRepository.java
+│       │       │   ├── Orders.java
+│       │       │   └── OrderItem.java
+│       │       └── security/            # Security and JWT classes
+│       │           ├── SecurityConfig.java
+│       │           ├── JwtFilter.java
+│       │           ├── JwtUtil.java
+│       │           ├── HashPassword.java
+│       │           └── CustomUserDetailsService.java
+│       └── test/
+│           └── java/com/example/e_commerce/
+│               └── ECommerceApplicationTests.java
+└── react-e-commerce/                    # React + Vite frontend
+    ├── package.json
+    ├── package-lock.json
+    ├── index.html
+    ├── vite.config.js
+    └── src/
+        ├── App.jsx
+        ├── App.css
+        ├── main.jsx
+        ├── index.css
+        ├── assets/
+        └── components/
+            ├── admin/
+            ├── api/                     # API helper modules
+            ├── cart/
+            ├── login/
+            ├── navbar/
+            ├── products/
+            ├── protectedroute/
+            ├── register/
+            ├── search/
+            └── user/
+```
+
+The tree above highlights the main files and packages; some folders contain additional files. Database scripts and a root-level screenshots folder are not currently included in this structure.
+
+## Prerequisites
+
+Install the following before running the project:
+- JDK 17
+- MySQL
+- Node.js and npm
 - Git
-- GitHub
 
----
+The backend uses the Maven Wrapper, so a separate Maven installation is generally not required.
 
-## 📁 Project Structure
+## Setup and Run
 
-```
-ecommerce/
-│
-├── frontend/
-│
-├── backend/
-│   ├── controller/
-│   ├── service/
-│   ├── repository/
-│   ├── entity/
-│   ├── dto/
-│   ├── config/
-│   ├── exception/
-│   └── util/
-│
-├── database/
-│
-├── screenshots/
-│
-└── README.md
-```
-
----
-
-## ⚙️ Installation
-
-### 1. Clone Repository
+### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/ecommerce.git
+git clone https://github.com/surya-jfs/E-commerce-project.git
+cd E-commerce-project
 ```
 
-### 2. Navigate to Project
+### 2. Configure MySQL
 
-```bash
-cd ecommerce
+Create a MySQL database for the application. For example:
+
+```sql
+CREATE DATABASE ecommerce_db;
 ```
 
-### 3. Configure Database
+Configure the datasource URL, username, and password for your local MySQL instance in the Spring Boot configuration. If you use an `application.properties` file, place it at:
 
-Create a MySQL database.
+`e-commerce/src/main/resources/application.properties`
 
-```
-Database Name:
-ecommerce_db
-```
-
-Update `application.properties`
+Example configuration (replace the username and password with your own values):
 
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/ecommerce_db
-spring.datasource.username=root
-spring.datasource.password=your_password
+spring.datasource.username=YOUR_MYSQL_USERNAME
+spring.datasource.password=YOUR_MYSQL_PASSWORD
 ```
 
-### 4. Run Backend
+Do not commit real database passwords or other secrets to GitHub.
 
-```bash
-mvn spring-boot:run
+### 3. Run the Spring Boot backend
+
+Open a terminal in the repository root.
+
+On Windows:
+
+```powershell
+cd e-commerce
+.\mvnw.cmd spring-boot:run
 ```
 
-### 5. Run Frontend
-
-If using React:
+On macOS/Linux:
 
 ```bash
+cd e-commerce
+chmod +x mvnw
+./mvnw spring-boot:run
+```
+
+Keep the backend terminal running. Check the application logs for startup errors and the port on which the server starts.
+
+### 4. Run the React frontend
+
+Open a second terminal from the repository root:
+
+```bash
+cd react-e-commerce
 npm install
-npm start
+npm run dev
 ```
 
----
+Open the local URL printed by Vite in the terminal.
 
-## 🔑 API Modules
+## Main Application Areas
 
-- Authentication
-- Users
-- Products
-- Categories
-- Cart
+The repository includes frontend components and backend classes for:
+- User registration and login
+- Product browsing and search
+- Shopping cart
 - Orders
-- Payments
-- Admin
+- Admin-related functionality
+- Backend security and JWT handling
 
----
+The exact available operations depend on the implemented endpoints and current application configuration.
 
-## 📷 Screenshots
+## Development Commands
 
-Add screenshots here.
+Run these commands from `react-e-commerce/`:
 
-- Home Page
-- Product Page
-- Cart
-- Checkout
-- Admin Dashboard
+```bash
+npm run dev     # Start the Vite development server
+npm run build   # Build the frontend for production
+npm run lint    # Run ESLint
+npm run preview # Preview the production build locally
+```
 
----
+## Troubleshooting
 
-## 📌 Future Enhancements
+- **Backend cannot connect to MySQL:** Verify that MySQL is running, the database exists, and the datasource credentials are correct.
+- **Frontend API requests fail:** Confirm the backend is running and check the API base URL in the frontend API helper files.
+- **Frontend dependencies are missing:** Run `npm install` from `react-e-commerce/`.
+- **Backend does not start:** Check that JDK 17 is installed and review the Maven/Spring Boot error output.
 
-- Payment Gateway Integration
-- Wishlist
-- Product Reviews & Ratings
-- Email Notifications
-- Invoice Generation
-- Coupon System
-- AI Product Recommendation
-- Docker Deployment
-- Cloud Deployment (AWS/Azure)
+## Future Improvements
 
----
+Possible additions include documenting API endpoints, adding screenshots, writing more automated tests, and providing deployment instructions.
 
-## 🤝 Contributing
+## Author
 
-Contributions are welcome.
+Surya
 
-1. Fork the repository.
-2. Create a feature branch.
-3. Commit your changes.
-4. Push to GitHub.
-5. Open a Pull Request.
+## Repository
 
----
-
-## 📄 License
-
-This project is developed for educational and learning purposes.
-
----
-
-## 👨‍💻 Author
-
-**Surya**
-
-GitHub:
-https://github.com/your-username
-
----
-
-## ⭐ Support
-
-If you like this project, don't forget to ⭐ the repository.
+https://github.com/surya-jfs/E-commerce-project
